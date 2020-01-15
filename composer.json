@@ -1,0 +1,5 @@
+{
+    "require": {
+        "tg-bot-api/bot-api-base": "^1.1"
+    }
+}
