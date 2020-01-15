@@ -15,7 +15,9 @@ $userId = 'SICosyBot';
 try {
     $bot->send(\TgBotApi\BotApiBase\Method\SendMessageMethod::create($userId, 'Hi'));
 } catch (\TgBotApi\BotApiBase\Exception\BadArgumentException $e) {
+    echo $e;
 } catch (\TgBotApi\BotApiBase\Exception\ResponseException $e) {
+    echo $e;
 }
 
 
