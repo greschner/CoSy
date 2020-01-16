@@ -1,6 +1,8 @@
 <?php
 require_once 'vendor/autoload.php';
 
+#Framework from: https://github.com/tg-bot-api/bot-api-base
+
 $botKey = '1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4';
 
 $requestFactory = new Http\Factory\Guzzle\RequestFactory();
@@ -12,13 +14,13 @@ $bot = new \TgBotApi\BotApiBase\BotApi($botKey, $apiClient, new \TgBotApi\BotApi
 
 $userId = '20598804';
 
-try {
+/*try {
     $bot->send(\TgBotApi\BotApiBase\Method\SendMessageMethod::create($userId, 'Hi'));
 } catch (\TgBotApi\BotApiBase\Exception\BadArgumentException $e) {
     echo $e;
 } catch (\TgBotApi\BotApiBase\Exception\ResponseException $e) {
     echo $e;
-}
+}*/
 
 
 ?>
