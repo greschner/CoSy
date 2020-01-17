@@ -22,7 +22,7 @@ switch ($method) {
 
 #search TODO: implement (build correct strings) react to roles
 if (isset($request["search_term"])) {
-    $term = $request["search_term"];
+    $term = str_replace(" ", "+", $request["search_term"]);
 } else {
     $term = "*";
 }
@@ -44,7 +44,7 @@ if (isset($request["role"])) {
             $url = "https://www.saferinternet.at/suche/?L=0&id=59&tx_solr%5Bq%5D=" . $term;
     }
 } else {
-    $url = "https://www.saferinternet.at/suche/?L=0&id=59&tx_solr%5Bq%5D=" . $term;
+    $url = "https://www.saferinternet.at/suche/?L=0&id=59&tx_solr[q]=" . $term;
 }
 
 #parse site
@@ -58,7 +58,8 @@ $result_array = [];
 $result_array["request"] = $request;
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
-$result_array["result"] = $search_results;
+if ($search_results[0] !== null)
+    $result_array["result"] = "<a href='" . $search_results[0]["link"] . "'>" . $search_results[0]["heading"] . "</a>"; #TODO: change when moving to PHP-Bot (ActiveChat bot just accepts plain text)
 
 #return data
 header('content-type: application/json');
