@@ -45,9 +45,8 @@ if (isset($request["role"])) {
 	    $role = '/2/19/';
 	    break;
     }
-    //git push origin HEAD:<name-of-remote-branch>
+    $role = 'tx_solr[filter][0]=category:'.$role;
 }
-
 $url = str_replace('%searchstring%', $term, $url);
 $url = str_replace('%group%', $role, $url);
 
