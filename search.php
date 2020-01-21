@@ -45,7 +45,7 @@ if (isset($request["role"])) {
 	    $role = '/2/19/';
 	    break;
     }
-    $role = 'tx_solr[filter][0]=category:'.$role;
+    $role = '&tx_solr[filter][0]=category:'.$role;
 }
 $url = str_replace('%searchstring%', $term, $url);
 $url = str_replace('%group%', $role, $url);
