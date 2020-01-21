@@ -21,31 +21,34 @@ switch ($method) {
 }
 
 #search TODO: implement (build correct strings) react to roles
+$term = *;
 if (isset($request["search_term"])) {
-    $term = str_replace(" ", "+", $request["search_term"]);
-} else {
-    $term = "*";
-}
-$url = "https://www.saferinternet.at/suche/?tx_solr%5Bq%5D=";
+    $term = urlencode($request["search_term"]);
+} 
+$url = "https://www.saferinternet.at/suche/?tx_solr[q]=%searchstring%&tx_solr[filter][0]=category:%group%";
+$role = *;
 if (isset($request["role"])) {
     switch ($request["role"]) {
         case "Eltern":
-            //break;
+	    $role = '/2/16/';
+	    break;
         case "Lehrende":
-            //break;
+	    $role = '/2/17/';
+            break;
         case "Jugendliche":
-            //break;
+	    $role = '/2/20/';
+            break;
         case "Senioren":
+	    $role = '/2/18/';
             break;
         case "Jugendarbeit":
-            $url = "https://www.saferinternet.at/suche/?tx_solr%5Bq%5D=snapchat&tx_solr%5Bfilter%5D%5B0%5D=category%3A%2F2%2F19%2F";
-            break;
-        default:
-            $url = "https://www.saferinternet.at/suche/?L=0&id=59&tx_solr%5Bq%5D=" . $term;
+	    $role = '/2/19/';
+	    break;
     }
-} else {
-    $url = "https://www.saferinternet.at/suche/?L=0&id=59&tx_solr[q]=" . $term;
 }
+
+$url = str_replace('%searchstring%', $term, $url);
+$url = str_replace('%group%', $role, $url);
 
 #parse site
 $my_parser = new Parser($url);
