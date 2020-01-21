@@ -25,8 +25,8 @@ $term = '*';
 if (isset($request["search_term"])) {
     $term = urlencode($request["search_term"]);
 } 
-$url = "https://www.saferinternet.at/suche/?tx_solr[q]=%searchstring%&tx_solr[filter][0]=category:%group%";
-$role = '*';
+$url = "https://www.saferinternet.at/suche/?tx_solr[q]=%searchstring%%group%";
+$role = '';
 if (isset($request["role"])) {
     switch ($request["role"]) {
         case "Eltern":
@@ -45,6 +45,7 @@ if (isset($request["role"])) {
 	    $role = '/2/19/';
 	    break;
     }
+    //git push origin HEAD:<name-of-remote-branch>
 }
 
 $url = str_replace('%searchstring%', $term, $url);
