@@ -61,10 +61,12 @@ $result_array = [];
 $result_array["request"] = $request;
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
-$result_array['test'] = 'test that';
-if ($search_results[0] !== null)
-    $result_array["result"] = "<a href='" . $search_results[0]["link"] . "'>" . $search_results[0]["heading"] . "</a>"; #TODO: change when moving to PHP-Bot (ActiveChat bot just accepts plain text)
-
+$counter =0;
+$result_array['result'] = '';
+while ($search_results[$counter] !== null && $counter < 5){
+    $result_array["result"] .= "<a href='" . $search_results[$counter]["link"] . "'>" . $search_results[$counter]["heading"] . "</a><br>"; #TODO: change when moving to PHP-Bot (ActiveChat bot just accepts plain text)
+    $counter++;
+}
 #return data
 header('content-type: application/json');
 $json_data = json_encode($result_array, JSON_PRETTY_PRINT);
