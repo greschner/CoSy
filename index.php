@@ -14,6 +14,10 @@ $bot = new \TgBotApi\BotApiBase\BotApi($botKey, $apiClient, new \TgBotApi\BotApi
 
 $userId = '20598804';
 
+$file = file_get_contents("php://input");
+
+file_put_contents("test.txt",$file, FILE_APPEND);
+
 /*try {
     $bot->send(\TgBotApi\BotApiBase\Method\SendMessageMethod::create($userId, 'Hi'));
 } catch (\TgBotApi\BotApiBase\Exception\BadArgumentException $e) {
