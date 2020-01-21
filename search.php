@@ -21,12 +21,12 @@ switch ($method) {
 }
 
 #search TODO: implement (build correct strings) react to roles
-$term = *;
+$term = '*';
 if (isset($request["search_term"])) {
     $term = urlencode($request["search_term"]);
 } 
 $url = "https://www.saferinternet.at/suche/?tx_solr[q]=%searchstring%&tx_solr[filter][0]=category:%group%";
-$role = *;
+$role = '*';
 if (isset($request["role"])) {
     switch ($request["role"]) {
         case "Eltern":
