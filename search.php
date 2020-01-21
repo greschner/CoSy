@@ -28,20 +28,20 @@ if (isset($request["search_term"])) {
 $url = "https://www.saferinternet.at/suche/?tx_solr[q]=%searchstring%%group%";
 $role = '';
 if (isset($request["role"])) {
-    switch ($request["role"]) {
-        case "Eltern":
+    switch (strtolower($request["role"])) {
+        case "eltern":
 	    $role = '/2/16/';
 	    break;
-        case "Lehrende":
+        case "lehrende":
 	    $role = '/2/17/';
             break;
-        case "Jugendliche":
+        case "jugendliche":
 	    $role = '/2/20/';
             break;
-        case "Senioren":
+        case "senioren":
 	    $role = '/2/18/';
             break;
-        case "Jugendarbeit":
+        case "jugendarbeit":
 	    $role = '/2/19/';
 	    break;
     }
