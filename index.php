@@ -11,6 +11,7 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
+file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
 
 $update = Update::create($data);
 
@@ -30,8 +31,6 @@ if ($update->getMessage()->getText()=="/start"){
     $sendMessage->setReplyMarkup($keyboard);
     $bot->sendMessage($sendMessage);
 }
-
-file_put_contents("query.txt",$update->getCallbackQuery()->getMessage()->getText());
 
 if ($callbackQuery = $update->getCallbackQuery()) {
 
