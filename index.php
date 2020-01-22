@@ -24,7 +24,7 @@ if ($update->getMessage()->getText()=="/start"){
     $b3 = new InlineKeyboardButton('Jugendarbeit');
     $b4 = new InlineKeyboardButton('Jugendliche');
     $b5 = new InlineKeyboardButton('Senioren');
-    $keyboard = new InlineKeyboardMarkup([$b1, $b2, $b3]);
+    $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3]]);
 
     $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Choose an option.');
     $sendMessage->setReplyMarkup($keyboard);
