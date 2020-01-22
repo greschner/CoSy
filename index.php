@@ -51,7 +51,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         $bot->sendMessage($sendMessage);
     }
 
-    //$bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+    $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
 }
 
 /*$bot->sendMessage(new SendMessage(
