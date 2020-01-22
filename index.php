@@ -16,6 +16,9 @@ $update = Update::create($data);
 $bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
 
 if ($update->getMessage()->getText()=="/start"){
+
+    file_put_contents("test.txt",$update->getMessage()->getText());
+
     $b1 = new InlineKeyboardButton('Eltern');
     $b2 = new InlineKeyboardButton('Lehrende');
     $b3 = new InlineKeyboardButton('Jugendarbeit');
