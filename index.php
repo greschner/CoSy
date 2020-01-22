@@ -31,11 +31,13 @@ if ($update->getMessage()->getText()=="/start"){
     $bot->sendMessage($sendMessage);
 }
 
+file_put_contents("query.txt",$update->getCallbackQuery()->getMessage()->getText());
+
 if ($callbackQuery = $update->getCallbackQuery()) {
 
     file_put_contents("test.txt",$callbackQuery->getMessage()->getText());
 
-    if ($callbackQuery->getMessage()->getText()=="Eltern"){
+  /*  if ($callbackQuery->getMessage()->getText()=="Eltern"){
         $answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
         $answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
 
@@ -49,7 +51,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         $sendMessage->setReplyMarkup($keyboard);
         $bot->answerCallbackQuery($answerCallbackQuery);
         $bot->sendMessage($sendMessage);
-    }
+    }*/
 
     $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
 }
