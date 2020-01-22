@@ -1,22 +1,31 @@
 <?php
 require_once 'vendor/autoload.php';
 
+use Formapro\TelegramBot\Bot;
+use Formapro\TelegramBot\Update;
+use Formapro\TelegramBot\SendMessage;
+use function GuzzleHttp\Psr7\str;
+
+$requestBody = file_get_contents('php://input');
+$data = json_decode($requestBody, true);
+
+$update = Update::create($data);
+
+$bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
+$bot->sendMessage(new SendMessage(
+    $update->getMessage()->getChat()->getId(),
+    'Hi there! What can I do?'
+));
+
+
 #Framework from: https://github.com/tg-bot-api/bot-api-base
 
 $botKey = '1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4';
 
-$requestFactory = new Http\Factory\Guzzle\RequestFactory();
-$streamFactory = new Http\Factory\Guzzle\StreamFactory();
-$client = new Http\Adapter\Guzzle6\Client();
 
-$apiClient = new \TgBotApi\BotApiBase\ApiClient($requestFactory, $streamFactory, $client);
-$bot = new \TgBotApi\BotApiBase\BotApi($botKey, $apiClient, new \TgBotApi\BotApiBase\BotApiNormalizer());
 
 $userId = '20598804';
 
-$file = file_get_contents("php://input");
-
-file_put_contents("test.txt",$file, FILE_APPEND);
 
 /*try {
     $bot->send(\TgBotApi\BotApiBase\Method\SendMessageMethod::create($userId, 'Hi'));
