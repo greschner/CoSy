@@ -38,8 +38,9 @@ if ($callbackQuery = $update->getCallbackQuery()) {
 
     switch ($callbackQuery->getData()){
         case "Eltern":
-            $answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
-            $answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
+            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+            //$answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
+            //$answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
 
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Frage stellen');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Themen anzeigen');
@@ -49,7 +50,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
 
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich kann dir anbieten eine Frage zu beantworten, oder dir verschiedene Themen vorschlagen. Was klingt besser?');
             $sendMessage->setReplyMarkup($keyboard);
-            $bot->answerCallbackQuery($answerCallbackQuery);
+            $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             $bot->sendMessage($sendMessage);
             break;
         default:
