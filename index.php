@@ -61,7 +61,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         case "Richard Lugner":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
             $sendPhoto = new SendPhoto(
-                $update->getMessage()->getChat()->getId(),
+                $callbackQuery->getMessage()->getChat()->getId(),
                 file_get_contents('lugner.jpeg') // or just $picture if it's url
             );
             $sendPhoto->setCaption('I bims Richard Lugner');
