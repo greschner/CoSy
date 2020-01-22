@@ -20,13 +20,13 @@ if ($update->getMessage()->getText()=="/start"){
     file_put_contents("test.txt",$update->getMessage()->getText());
 
     $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
-   /* $b2 = new InlineKeyboardButton('Lehrende');
-    $b3 = new InlineKeyboardButton('Jugendarbeit');
-    $b4 = new InlineKeyboardButton('Jugendliche');
-    $b5 = new InlineKeyboardButton('Senioren');*/
-    $keyboard = new InlineKeyboardMarkup([[$b1]]);
+    $b2 = InlineKeyboardButton::withTextAsCallbackData('Lehrende');
+    $b3 = InlineKeyboardButton::withTextAsCallbackData('Jugendarbeit');
+    $b4 = InlineKeyboardButton::withTextAsCallbackData('Jugendliche');
+    $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
+    $keyboard = new InlineKeyboardMarkup([[$b1, $b2, $b3, $b4, $b5]]);
 
-    $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Choose an option.');
+    $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
     $sendMessage->setReplyMarkup($keyboard);
     $bot->sendMessage($sendMessage);
 }
