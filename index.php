@@ -2,6 +2,7 @@
 require_once 'vendor/autoload.php';
 
 use Formapro\TelegramBot\Bot;
+use Formapro\TelegramBot\SendPhoto;
 use Formapro\TelegramBot\Update;
 use Formapro\TelegramBot\SendMessage;
 use Formapro\TelegramBot\InlineKeyboardButton;
@@ -39,19 +40,32 @@ if ($callbackQuery = $update->getCallbackQuery()) {
     switch ($callbackQuery->getData()){
         case "Eltern":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-            //$answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
-            //$answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
-
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Frage stellen');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Themen anzeigen');
-            $b3 = InlineKeyboardButton::withTextAsCallbackData('Imm Moment nichts');
-
+            $b3 = InlineKeyboardButton::withTextAsCallbackData('Im Moment nichts');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3]]);
-
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich kann dir anbieten eine Frage zu beantworten, oder dir verschiedene Themen vorschlagen. Was klingt besser?');
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             $bot->sendMessage($sendMessage);
+            break;
+        case "Lehrende":
+            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+            break;
+        case "Jugendarbeit":
+            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+            break;
+        case "Jugendliche":
+            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+            break;
+        case "Richard Lugner":
+            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+            $sendPhoto = new SendPhoto(
+                $update->getMessage()->getChat()->getId(),
+                file_get_contents('lugner.jpeg') // or just $picture if it's url
+            );
+            $sendPhoto->setCaption('I bims Richard Lugner');
+            $bot->sendPhoto($sendPhoto);
             break;
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
@@ -60,49 +74,5 @@ if ($callbackQuery = $update->getCallbackQuery()) {
     file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
 
 }
-
-/*if ($callbackQuery = $update->getCallbackQuery()) {
-
-    file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
-
-    if ($callbackQuery->getMessage()->getText()=="Eltern"){
-        $answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
-        $answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
-
-        $b1 = InlineKeyboardButton::withTextAsCallbackData('Frage stellen');
-        $b2 = InlineKeyboardButton::withTextAsCallbackData('Themen anzeigen');
-        $b3 = InlineKeyboardButton::withTextAsCallbackData('Imm Moment nichts');
-
-        $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3]]);
-
-        $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich kann dir anbieten eine Frage zu beantworten, oder dir verschiedene Themen vorschlagen. Was klingt besser?');
-        $sendMessage->setReplyMarkup($keyboard);
-        $bot->answerCallbackQuery($answerCallbackQuery);
-        $bot->sendMessage($sendMessage);
-
-
-    $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-} }*/
-
-/*$bot->sendMessage(new SendMessage(
-    $update->getMessage()->getChat()->getId(),
-    'Hi there! What can I do?'
-));*/
-
-
-#Framework from: https://github.com/tg-bot-api/bot-api-base
-
-$botKey = '1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4';
-$userId = '20598804';
-
-
-/*try {
-    $bot->send(\TgBotApi\BotApiBase\Method\SendMessageMethod::create($userId, 'Hi'));
-} catch (\TgBotApi\BotApiBase\Exception\BadArgumentException $e) {
-    echo $e;
-} catch (\TgBotApi\BotApiBase\Exception\ResponseException $e) {
-    echo $e;
-}*/
-
 
 ?>
