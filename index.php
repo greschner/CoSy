@@ -18,7 +18,7 @@ $update = Update::create($data);
 $bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
 
 if ($callbackQuery = $update->getCallbackQuery()) {
-    $bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
+    file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
     $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
 }
 
