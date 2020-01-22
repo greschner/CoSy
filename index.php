@@ -25,12 +25,13 @@ if ($update->getMessage()->getText()=="/start"){
 
     $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Choose an option.');
     $sendMessage->setReplyMarkup($keyboard);
+    $bot->sendMessage($sendMessage);
 }
 
-$bot->sendMessage(new SendMessage(
+/*$bot->sendMessage(new SendMessage(
     $update->getMessage()->getChat()->getId(),
     'Hi there! What can I do?'
-));
+));*/
 
 
 #Framework from: https://github.com/tg-bot-api/bot-api-base
