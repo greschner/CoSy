@@ -19,12 +19,12 @@ if ($update->getMessage()->getText()=="/start"){
 
     file_put_contents("test.txt",$update->getMessage()->getText());
 
-    $b1 = new InlineKeyboardButton('Eltern');
-    $b2 = new InlineKeyboardButton('Lehrende');
+    $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
+   /* $b2 = new InlineKeyboardButton('Lehrende');
     $b3 = new InlineKeyboardButton('Jugendarbeit');
     $b4 = new InlineKeyboardButton('Jugendliche');
-    $b5 = new InlineKeyboardButton('Senioren');
-    $keyboard = new InlineKeyboardMarkup([[$b1, $b2, $b3]]);
+    $b5 = new InlineKeyboardButton('Senioren');*/
+    $keyboard = new InlineKeyboardMarkup([[$b1]]);
 
     $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Choose an option.');
     $sendMessage->setReplyMarkup($keyboard);
