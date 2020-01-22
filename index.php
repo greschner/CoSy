@@ -17,6 +17,11 @@ $update = Update::create($data);
 
 $bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
 
+if ($callbackQuery = $update->getCallbackQuery()) {
+    $bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
+    $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+}
+
 if ($update->getMessage()->getText()=="/start"){
 
     $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
@@ -32,11 +37,11 @@ if ($update->getMessage()->getText()=="/start"){
     $bot->sendMessage($sendMessage);
 }
 
-if ($callbackQuery = $update->getCallbackQuery()) {
+/*if ($callbackQuery = $update->getCallbackQuery()) {
 
-    file_put_contents("test.txt",$callbackQuery->getMessage()->getText());
+    file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
 
-  /*  if ($callbackQuery->getMessage()->getText()=="Eltern"){
+    if ($callbackQuery->getMessage()->getText()=="Eltern"){
         $answerCallbackQuery = new AnswerCallbackQuery($callbackQuery->getId());
         $answerCallbackQuery->setText("Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start");
 
@@ -50,10 +55,10 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         $sendMessage->setReplyMarkup($keyboard);
         $bot->answerCallbackQuery($answerCallbackQuery);
         $bot->sendMessage($sendMessage);
-    }*/
+
 
     $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-}
+} }*/
 
 /*$bot->sendMessage(new SendMessage(
     $update->getMessage()->getChat()->getId(),

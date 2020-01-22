@@ -11,7 +11,7 @@ class InlineKeyboardButton
 
     private $objects = [];
 
-    public function __construct(string $text)
+    private function __construct(string $text)
     {
         set_value($this, 'text', $text);
     }
