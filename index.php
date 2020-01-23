@@ -31,9 +31,11 @@ if ($message = $update->getMessage()){
         $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
         $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
-        $sendMessage->setReplyMarkup($keyboard);
-        $bot->sendMessage(new SendMessage($update->getMessage()->getChat()->getId(),'Hallo'));
+        //$sendMessage->setReplyMarkup($keyboard);
+        $sendMessage2 = new SendMessage($update->getMessage()->getChat()->getId(),'');
+        $sendMessage2->setReplyMarkup($keyboard);
         $bot->sendMessage($sendMessage);
+        $bot->sendMessage($sendMessage2);
     }
 }
 
