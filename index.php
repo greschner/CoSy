@@ -30,11 +30,8 @@ if ($message = $update->getMessage()){
         $b5 = InlineKeyboardButton::withTextAsCallbackData('Richard Lugner');
         $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
-        $sendMessage2 = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
-        //$sendMessage->setReplyMarkup($keyboard);
-        $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(),'');
+        $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
         $sendMessage->setReplyMarkup($keyboard);
-        $bot->sendMessage($sendMessage2);
         $bot->sendMessage($sendMessage);
     }
 }
