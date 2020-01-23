@@ -48,6 +48,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             $bot->sendMessage($sendMessage);
+            $bot->deleteMessage(new \Formapro\TelegramBot\DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             break;
         case "Lehrende":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
