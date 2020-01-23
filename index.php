@@ -8,6 +8,7 @@ use Formapro\TelegramBot\SendMessage;
 use Formapro\TelegramBot\InlineKeyboardButton;
 use Formapro\TelegramBot\InlineKeyboardMarkup;
 use Formapro\TelegramBot\AnswerCallbackQuery;
+use Formapro\TelegramBot\DeleteMessage;
 use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
@@ -31,6 +32,7 @@ if ($message = $update->getMessage()){
 
         $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
         $sendMessage->setReplyMarkup($keyboard);
+        $bot->sendMessage(new SendMessage($update->getMessage()->getChat()->getId(),'Hallo'));
         $bot->sendMessage($sendMessage);
     }
 }
@@ -48,7 +50,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Toll. Das hat so weit gut funktioniert. Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             $bot->sendMessage($sendMessage);
-            $bot->deleteMessage(new \Formapro\TelegramBot\DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             break;
         case "Lehrende":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
