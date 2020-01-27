@@ -42,18 +42,36 @@ function writeTargetGroup($chatID, $targetGroup){
 
 if ($message = $update->getMessage()){
 
-    if ($message->getText()=="/start"){
-        $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
-        $b2 = InlineKeyboardButton::withTextAsCallbackData('Lehrende');
-        $b3 = InlineKeyboardButton::withTextAsCallbackData('Jugendarbeit');
-        $b4 = InlineKeyboardButton::withTextAsCallbackData('Jugendliche');
-        $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
-        $b5 = InlineKeyboardButton::withTextAsCallbackData('Richard Lugner');
-        $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
+    $messageText = $message->getText();
+    $chatID = $update->getMessage()->getChat()->getId();
 
-        $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin Nicole. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
-        $sendMessage->setReplyMarkup($keyboard);
-        $bot->sendMessage($sendMessage);
+    switch ($messageText){
+        case "/start":
+            $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
+            $b2 = InlineKeyboardButton::withTextAsCallbackData('Lehrende');
+            $b3 = InlineKeyboardButton::withTextAsCallbackData('Jugendarbeit');
+            $b4 = InlineKeyboardButton::withTextAsCallbackData('Jugendliche');
+            $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
+            $b5 = InlineKeyboardButton::withTextAsCallbackData('Richard Lugner');
+            $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
+
+            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+            $sendMessage->setReplyMarkup($keyboard);
+            $bot->sendMessage($sendMessage);
+            break;
+        default:
+            $role = getTargetGroup($chatID);
+            $search_term = $messageText;
+            $opts = array('http' =>
+                array(
+                    'method'  => 'GET',
+                    'header'  => 'Content-type: application/json'
+                )
+            );
+            $context = stream_context_create($opts);
+            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=$search_term&role=$role", false, $context);
+            $sendMessage = new SendMessage($chatID, $result);
+            $bot->sendMessage($sendMessage);
     }
 }
 
