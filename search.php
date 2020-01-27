@@ -62,9 +62,9 @@ $result_array["request"] = $request;
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
 $counter =0;
-$result_array['result'] = '';
+$result_array['result'] = [];
 while ($search_results[$counter] !== null && $counter < 5){
-    $result_array["result"] .= "<a href='" . $search_results[$counter]["link"] . "'>" . $search_results[$counter]["heading"] . "</a><br>"; #TODO: change when moving to PHP-Bot (ActiveChat bot just accepts plain text)
+    array_push($result_array["result"], $search_results[$counter]["link"]);
     $counter++;
 }
 #return data
