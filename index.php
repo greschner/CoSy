@@ -59,7 +59,7 @@ if ($message = $update->getMessage()){
             $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
-            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.'.PHP_EOL.'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage($sendMessage);
             break;
@@ -114,6 +114,32 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             break;
         case "Frage stellen":
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Dann leg los! Stell mir eine Frage!');
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+            sleep(1);
+            $bot->sendMessage($sendMessage);
+            break;
+        case "Themen anzeigen":
+            $b1 = InlineKeyboardButton::withTextAsCallbackData('Handy & Tablet');
+            $b2 = InlineKeyboardButton::withTextAsCallbackData('Digitale Spiele');
+            $b3 = InlineKeyboardButton::withTextAsCallbackData('Problematische Inhalte');
+            $b4 = InlineKeyboardButton::withTextAsCallbackData('Datenschutz');
+            $b5 = InlineKeyboardButton::withTextAsCallbackData('Soziale Netzwerke');
+            $b6 = InlineKeyboardButton::withTextAsCallbackData('Informationskompetenz');
+            $b7 = InlineKeyboardButton::withTextAsCallbackData('Urheberrechte');
+            $b8 = InlineKeyboardButton::withTextAsCallbackData('Cyber Mobbing');
+            $b9 = InlineKeyboardButton::withTextAsCallbackData('Internet Betrug');
+            $b10 = InlineKeyboardButton::withTextAsCallbackData('Online-Shopping');
+            $b11 = InlineKeyboardButton::withTextAsCallbackData('Selbstdarstellung');
+            $b12 = InlineKeyboardButton::withTextAsCallbackData('Viren, Spam & Co');
+            $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5], [$b6], [$b7], [$b8], [$b9], [$b10], [$b11], [$b12]]);
+            $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich habe folgende Themen zur Auswahl:');
+            $sendMessage->setReplyMarkup($keyboard);
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+            sleep(1);
+            $bot->sendMessage($sendMessage);
+            break;
+        case "Im Moment nichts":
+            $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Kein Problem! Lass mich es wissen, wenn du was brauchst.');
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
             $bot->sendMessage($sendMessage);
