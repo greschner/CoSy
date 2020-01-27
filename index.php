@@ -23,6 +23,7 @@ function getTargetGroup($chatID)
 {
     $targetGroupFileName = "targetGroup.json";
     $content = file_get_contents($targetGroupFileName);
+    $result = false;
     if ($content === false) // no file existing yet
         $result = false;
     else {
