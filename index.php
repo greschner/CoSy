@@ -17,7 +17,7 @@ file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
 
 $update = Update::create($data);
 
-$bot = new Bot('1007196355:AAHFvhwo89yJZympLncHzrMPgityuwIJrg4');
+$bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
 
 if ($message = $update->getMessage()){
 
