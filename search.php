@@ -20,7 +20,7 @@ switch ($method) {
         exit;
 }
 
-#search TODO: implement (build correct strings) react to roles
+#search
 $term = '*';
 if (isset($request["search_term"])) {
     $term = urlencode($request["search_term"]);
@@ -102,9 +102,7 @@ $search_results = $my_parser->getData();
 
 #build response object
 $result_array = [];
-//$result_array["request"] = strtolower($request["filter"]);
-$result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
-$result_array["url"] = $url; #TODO remove (testing only)
+$result_array["url"] = $url;
 $counter = 0;
 $result_array['result'] = [];
 while ($search_results[$counter] !== null && $counter < 5) {
