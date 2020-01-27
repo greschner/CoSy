@@ -28,7 +28,6 @@ class Parser
 
     private $loopPosition = 0;
 
-    #TODO: replace with better operation
     private $spaceCharacter = null;
 
     /**
@@ -54,7 +53,6 @@ class Parser
             $old_file_string = $file_string;
             $file_string = str_replace("  ", " ", $file_string);
         }
-        #TODO: check, might result in conflicts, if string values contain < or >
         $file_string = str_replace("> ", ">", $file_string);
         $file_string = str_replace(" <", "<", $file_string);
 
@@ -74,7 +72,6 @@ class Parser
     {
         #go to opening tag
         for (; $this->loopPosition < $this->fileLength; ++$this->loopPosition) {
-            #TODO: mind \ , evt problem
             if ($this->file[$this->loopPosition] == '<') {
                 $this->first = $this->loopPosition;
                 $this->inTag = true;
@@ -179,7 +176,6 @@ class Parser
             $tag_data = substr($this->file, $this->first + 1, ($this->last - $this->first));
             $attributes = [];
 
-            #TODO: refactor:
             if ($this->spaceCharacter != null) {
                 $space_pos = strpos($tag_data, " ");
                 $attributes = $this->readAttributes(substr($tag_data, $space_pos + 1));
@@ -187,7 +183,7 @@ class Parser
             } elseif ($this->tagIncludesEnd) {
                 $tag_data = substr($tag_data, 0, -1);
             }
-            $tag_data = preg_replace("/>/", "", $tag_data); #TODO refactor
+            $tag_data = preg_replace("/>/", "", $tag_data);
 
             if (strlen($tag_data) > 0) {
                 #Tag is not the end
@@ -201,7 +197,6 @@ class Parser
                     if (!$this->tagIncludesEnd) {
                         array_push($this->referenceStack, $tag_elem);
                     }
-                    #TODO: check
                     #set pointer for text Element to new position:
                     $this->textStart = $this->loopPosition + 1;
                 }
@@ -322,8 +317,6 @@ class Parser
             if ($this->first != null)
                 break;
         }
-        #TODO: may want to add text to json where file is over... (not necessary)
-
         #echo "i: " . $i . "," . "s/e: " . $this->textStart . ", " . $this->textEnd . ";";
 
         ++$this->loopPosition;
@@ -359,7 +352,6 @@ class Parser
             $attr_seq = substr($attr_seq, $equal_sign + 1);
 
             if ($attr_seq[0] == "\"" || $attr_seq[0] = '\'') {
-                #TODO: case with attribute value="sth\"and" (escape sequence!)
                 $quot_close = strpos(substr($attr_seq, 1), "" . $attr_seq[0]);
 
                 if ($quot_close) {
@@ -370,7 +362,7 @@ class Parser
                     $attr_seq = "";
                 }
 
-                $attr_values = $attr_values . " "; #work around TODO: change
+                $attr_values = $attr_values . " ";
                 $attr_value_arr = [];
 
                 while ($space_pos = strpos($attr_values, " ")) {
@@ -378,10 +370,8 @@ class Parser
                     $attr_values = substr($attr_values, $space_pos + 1);
                 }
 
-                #TODO: split attribute-values interconnected by " "
                 $attributes[$attr_name] = $attr_value_arr;
             } else {
-                #TODO: case attribute without quotation mark
                 error_log("attribute had no quotation marks for its value!");
             }
             $equal_sign = strpos($attr_seq, "=");
@@ -403,7 +393,7 @@ class Parser
             if ($not_empty === 1) {
                 #remove spans
                 $text_elem = str_replace("</span>", "", $text_elem);
-                $text_elem = str_replace("<span class=\"results-highlight\">", "", $text_elem); #TODO match all span cases
+                $text_elem = str_replace("<span class=\"results-highlight\">", "", $text_elem);
                 return $text_elem;
             } else {
                 return null;
