@@ -46,7 +46,7 @@ function writeTargetGroup($chatID, $targetGroup)
     file_put_contents($targetGroupFileName, json_encode($content_decoded), LOCK_EX);
 }
 
-function performSearch($bot, $chatID, $searchTerm, $filter)
+/*function performSearch($bot, $chatID, $searchTerm, $filter)
 {
     $role = getTargetGroup($chatID);
     $searchTerm_enc = urlencode($searchTerm);
@@ -74,7 +74,7 @@ function performSearch($bot, $chatID, $searchTerm, $filter)
             $bot->sendMessage($sendMessage);
         }
     }
-}
+}*/
 
 if ($message = $update->getMessage()) {
 
@@ -95,7 +95,26 @@ if ($message = $update->getMessage()) {
             $bot->sendMessage($sendMessage);
             break;
         default:
-            performSearch($bot, $chatID, $messageText, false);
+            $role = getTargetGroup($chatID);
+            $search_term = urlencode($messageText);
+            $opts = array('http' =>
+                array(
+                    'method'  => 'GET',
+                    'header'  => 'Content-type: application/json'
+                )
+            );
+            $context = stream_context_create($opts);
+            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=$search_term&role=$role", false, $context);
+            $resultJson = json_decode($result, true);
+            $returnData = $resultJson['result'];
+            if (count($returnData)===0){
+                $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
+                $bot->sendMessage($sendMessage);
+            } else {
+                foreach ($returnData as $item){
+                    $sendMessage = new SendMessage($chatID, $item);
+                    $bot->sendMessage($sendMessage);
+                }}
     }
 }
 
@@ -170,7 +189,26 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         case "Viren, Spam & Co":
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
-            performSearch($bot, $chatID, '*', $callbackData);
+            $role = getTargetGroup($chatID);
+            $search_term = urlencode($messageText);
+            $opts = array('http' =>
+                array(
+                    'method'  => 'GET',
+                    'header'  => 'Content-type: application/json'
+                )
+            );
+            $context = stream_context_create($opts);
+            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=*&role=$role&filter=$callbackData", false, $context);
+            $resultJson = json_decode($result, true);
+            $returnData = $resultJson['result'];
+            if (count($returnData)===0){
+                $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
+                $bot->sendMessage($sendMessage);
+            } else {
+                foreach ($returnData as $item){
+                    $sendMessage = new SendMessage($chatID, $item);
+                    $bot->sendMessage($sendMessage);
+                }}
             break;
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
