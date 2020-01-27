@@ -13,11 +13,32 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
-file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
-
 $update = Update::create($data);
+//file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
+
+
 
 $bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
+
+function getTargetGroup($chatID){
+   $targetGroupFileName = "targetGroup.json";
+   $content =  file_get_contents($targetGroupFileName);
+   $result = false;
+
+   if($content===false) // no file existing yet
+       $result = false;
+   else {
+       $targetGroup = json_decode($content, true);
+       $result = $targetGroup[$chatID];
+   }
+   return $result;
+}
+
+function writeTargetGroup($chatID, $targetGroup){
+    $targetGroupFileName = "targetGroup.json";
+    $data = array($chatID => $targetGroup);
+    file_put_contents($targetGroupFileName, $data,FILE_APPEND|LOCK_EX);
+}
 
 if ($message = $update->getMessage()){
 
@@ -30,16 +51,24 @@ if ($message = $update->getMessage()){
         $b5 = InlineKeyboardButton::withTextAsCallbackData('Richard Lugner');
         $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
-        $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin deine Mama. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+        $sendMessage = new SendMessage($update->getMessage()->getChat()->getId(), 'Hallo! Ich bin Nicole. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
         $sendMessage->setReplyMarkup($keyboard);
         $bot->sendMessage($sendMessage);
     }
 }
 
 if ($callbackQuery = $update->getCallbackQuery()) {
-    switch ($callbackQuery->getData()){
+    $chatID = $callbackQuery->getMessage()->getChat()->getId();
+    $callbackData = $callbackQuery->getData();
+    $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+
+    switch ($callbackData){
         case "Eltern":
-            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+        case "Lehrende":
+        case "Jugendarbeit":
+        case "Jugendliche":
+        case "Senioren":
+            writeTargetGroup($chatID, $callbackData);
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Frage stellen');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Themen anzeigen');
             $b3 = InlineKeyboardButton::withTextAsCallbackData('Im Moment nichts');
@@ -50,14 +79,8 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $bot->sendMessage($sendMessage);
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             break;
-        case "Lehrende":
-            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-            break;
-        case "Jugendarbeit":
-            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-            break;
-        case "Jugendliche":
-            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
+        case "Frage stellen":
+            $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Dann leg los! Stell mir eine Frage!');
             break;
         case "Richard Lugner":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
