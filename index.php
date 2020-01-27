@@ -1,6 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
-
+// https://api.telegram.org/bot1041036378:AAFJU6H2x42Ivy_UlveWtzUsRvcZLPFLbrg/setWebhook?url=https://lemonchill.azurewebsites.net/
 use Formapro\TelegramBot\Bot;
 use Formapro\TelegramBot\SendPhoto;
 use Formapro\TelegramBot\Update;
@@ -18,7 +18,7 @@ file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT));
 $update = Update::create($data);
 
 
-$bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
+$bot = new Bot('1041036378:AAFJU6H2x42Ivy_UlveWtzUsRvcZLPFLbrg');
 
 function getTargetGroup($chatID)
 {
@@ -45,7 +45,7 @@ function writeTargetGroup($chatID, $targetGroup)
     file_put_contents($targetGroupFileName, json_encode($content_decoded), LOCK_EX);
 }
 
-/*function performSearch($bot, $chatID, $searchTerm, $filter)
+function performSearch($bot, $chatID, $searchTerm, $filter)
 {
     $role = getTargetGroup($chatID);
     $searchTerm_enc = urlencode($searchTerm);
@@ -73,7 +73,7 @@ function writeTargetGroup($chatID, $targetGroup)
             $bot->sendMessage($sendMessage);
         }
     }
-}*/
+}
 
 if ($message = $update->getMessage()) {
 
@@ -94,7 +94,7 @@ if ($message = $update->getMessage()) {
             $bot->sendMessage($sendMessage);
             break;
         default:
-            //performSearch($bot, $chatID, $messageText, false);
+            performSearch($bot, $chatID, $messageText, false);
     }
 }
 
@@ -169,7 +169,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         case "Viren, Spam & Co":
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
-            //performSearch($bot, $chatID, '*', $callbackData);
+            performSearch($bot, $chatID, '*', $callbackData);
             break;
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
