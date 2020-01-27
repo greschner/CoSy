@@ -50,7 +50,7 @@ if (isset($request["role"])) {
 $filter = '';
 if (isset($request["filter"])) {
     switch (strtolower($request["filter"])) {
-        case "handy & tablet":
+        case "handy und tablet":
             $filter = '/1/4/';
             break;
         case "digitale spiele":
@@ -83,7 +83,7 @@ if (isset($request["filter"])) {
         case "urheberrechte":
             $filter = '/1/14/';
             break;
-        case "viren, spam & co":
+        case "viren, spam und co":
             $filter = '/1/15/';
             break;
     }
