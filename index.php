@@ -191,6 +191,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             sleep(1);
             $role = getTargetGroup($chatID);
             $search_term = urlencode($messageText);
+            $filter = urlencode($callbackData);
             $opts = array('http' =>
                 array(
                     'method'  => 'GET',
@@ -198,7 +199,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
                 )
             );
             $context = stream_context_create($opts);
-            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=*&role=$role&filter=$callbackData", false, $context);
+            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=*&role=$role&filter=$filter", false, $context);
             $resultJson = json_decode($result, true);
             $returnData = $resultJson['result'];
             if (count($returnData)===0){
