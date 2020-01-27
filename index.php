@@ -102,10 +102,12 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3]]);
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich kann dir anbieten eine Frage zu beantworten, oder dir verschiedene Themen vorschlagen. Was klingt besser?');
             $sendMessage->setReplyMarkup($keyboard);
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+            sleep(1);
             $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Alles klar! Ich merke mir diese Einstellung für zukünftige Fragen.'.PHP_EOL.'Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             sleep(1);
             $bot->sendMessage($sendMessage);
-            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+
             break;
         case "Frage stellen":
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Dann leg los! Stell mir eine Frage!');
