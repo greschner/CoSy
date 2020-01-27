@@ -7,6 +7,6 @@ $opts = array('http' =>
 	    )
 	);
 	$context = stream_context_create($opts);
-	$result = file_get_contents('search.php?search_term=facebook&role=jugendliche', false, $context);
+	$result = file_get_contents('https://lemonchill.azurewebsites.net/search.php?search_term=facebook&role=jugendliche', false, $context);
 	echo $result;
 ?>
