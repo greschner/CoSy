@@ -17,40 +17,68 @@ $update = Update::create($data);
 //file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
 
 
-
 $bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
 
-function getTargetGroup($chatID){
-   $targetGroupFileName = "targetGroup.json";
-   $content =  file_get_contents($targetGroupFileName);
-   $result = false;
-
-   if($content===false) // no file existing yet
-       $result = false;
-   else {
-       $targetGroup = json_decode($content, true);
-       $result = $targetGroup[$chatID];
-   }
-   return $result;
-}
-
-function writeTargetGroup($chatID, $targetGroup){
+function getTargetGroup($chatID)
+{
     $targetGroupFileName = "targetGroup.json";
-    $data = array($chatID => $targetGroup);
-    $content =  file_get_contents($targetGroupFileName);
-    if($content!==false) {// no file existing yet
-        $content_decoded = json_decode($content, true);
-     }
-    $content_decoded[$chatID] = $targetGroup;
-    file_put_contents($targetGroupFileName, json_encode($content_decoded),LOCK_EX);
+    $content = file_get_contents($targetGroupFileName);
+    if ($content === false) // no file existing yet
+        $result = false;
+    else {
+        $targetGroup = json_decode($content, true);
+        $result = $targetGroup[$chatID];
+    }
+    return $result;
 }
 
-if ($message = $update->getMessage()){
+function writeTargetGroup($chatID, $targetGroup)
+{
+    $targetGroupFileName = "targetGroup.json";
+    $content = file_get_contents($targetGroupFileName);
+    if ($content !== false) {// no file existing yet
+        $content_decoded = json_decode($content, true);
+    }
+    $content_decoded[$chatID] = $targetGroup;
+    file_put_contents($targetGroupFileName, json_encode($content_decoded), LOCK_EX);
+}
+
+function performSearch($bot, $chatID, $searchTerm, $filter)
+{
+    $role = getTargetGroup($chatID);
+    $searchTerm_enc = urlencode($searchTerm);
+    $opts = array('http' =>
+        array(
+            'method' => 'GET',
+            'header' => 'Content-type: application/json'
+        )
+    );
+    $context = stream_context_create($opts);
+    if ($filter === false)
+        $fn = "https://lemonchill.azurewebsites.net/search.php?search_term=$searchTerm_enc&role=$role";
+    else
+        $fn = "https://lemonchill.azurewebsites.net/search.php?search_term=$searchTerm_enc&role=$role&filter=$filter";
+
+    $result = file_get_contents($fn, false, $context);
+    $resultJson = json_decode($result, true);
+    $returnData = $resultJson['result'];
+    if (count($returnData) === 0) {
+        $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
+        $bot->sendMessage($sendMessage);
+    } else {
+        foreach ($returnData as $item) {
+            $sendMessage = new SendMessage($chatID, $item);
+            $bot->sendMessage($sendMessage);
+        }
+    }
+}
+
+if ($message = $update->getMessage()) {
 
     $messageText = $message->getText();
     $chatID = $update->getMessage()->getChat()->getId();
 
-    switch ($messageText){
+    switch ($messageText) {
         case "/start":
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Lehrende');
@@ -59,31 +87,12 @@ if ($message = $update->getMessage()){
             $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
-            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.'.PHP_EOL.'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.' . PHP_EOL . 'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage($sendMessage);
             break;
         default:
-            $role = getTargetGroup($chatID);
-            $search_term = urlencode($messageText);
-            $opts = array('http' =>
-                array(
-                    'method'  => 'GET',
-                    'header'  => 'Content-type: application/json'
-                )
-            );
-            $context = stream_context_create($opts);
-            $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=$search_term&role=$role", false, $context);
-            $resultJson = json_decode($result, true);
-            $returnData = $resultJson['result'];
-            if (count($returnData)===0){
-                $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
-                $bot->sendMessage($sendMessage);
-            } else {
-            foreach ($returnData as $item){
-                $sendMessage = new SendMessage($chatID, $item);
-                $bot->sendMessage($sendMessage);
-            }}
+            performSearch($bot, $chatID, $messageText, false);
     }
 }
 
@@ -92,7 +101,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
     $callbackData = $callbackQuery->getData();
     $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
 
-    switch ($callbackData){
+    switch ($callbackData) {
         case "Eltern":
         case "Lehrende":
         case "Jugendarbeit":
@@ -107,7 +116,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $sendMessage->setReplyMarkup($keyboard);
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
-            $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(),'Alles klar! Ich merke mir diese Einstellung für zukünftige Fragen.'.PHP_EOL.'Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
+            $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Alles klar! Ich merke mir diese Einstellung für zukünftige Fragen.' . PHP_EOL . 'Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             sleep(1);
             $bot->sendMessage($sendMessage);
 
@@ -144,10 +153,26 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             sleep(1);
             $bot->sendMessage($sendMessage);
             break;
+        case "Handy & Tablet":
+        case "Digitale Spiele":
+        case "Problematische Inhalte":
+        case "Datenschutz":
+        case "Soziale Netzwerke":
+        case "Informationskompetenz":
+        case "Urheberrechte":
+        case "Cyber Mobbing":
+        case "Internet Betrug":
+        case "Online-Shopping":
+        case "Selbstdarstellung":
+        case "Viren, Spam & Co":
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
+            sleep(1);
+            performSearch($bot, $chatID, '*', $callbackData);
+            break;
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
     }
-    file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
+    //file_put_contents("query.txt", $callbackQuery->getMessage()->getText());
 }
 
 ?>
