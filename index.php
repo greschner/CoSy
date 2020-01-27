@@ -57,7 +57,6 @@ if ($message = $update->getMessage()){
             $b3 = InlineKeyboardButton::withTextAsCallbackData('Jugendarbeit');
             $b4 = InlineKeyboardButton::withTextAsCallbackData('Jugendliche');
             $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
-            $b5 = InlineKeyboardButton::withTextAsCallbackData('Richard Lugner');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
 
             $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole. Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
@@ -77,10 +76,14 @@ if ($message = $update->getMessage()){
             $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=$search_term&role=$role", false, $context);
             $resultJson = json_decode($result, true);
             $returnData = $resultJson['result'];
+            if (count($returnData)===0){
+                $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
+                $bot->sendMessage($sendMessage);
+            } else {
             foreach ($returnData as $item){
                 $sendMessage = new SendMessage($chatID, $item);
                 $bot->sendMessage($sendMessage);
-            }
+            }}
     }
 }
 
@@ -111,17 +114,9 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             break;
         case "Frage stellen":
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Dann leg los! Stell mir eine Frage!');
-            $bot->sendMessage($sendMessage);
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
-            break;
-        case "Richard Lugner":
-            $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
-            $sendPhoto = new SendPhoto(
-                $callbackQuery->getMessage()->getChat()->getId(),
-                file_get_contents('lugner.jpeg') // or just $picture if it's url
-            );
-            $sendPhoto->setCaption('I bims Richard Lugner');
-            $bot->sendPhoto($sendPhoto);
+            sleep(1);
+            $bot->sendMessage($sendMessage);
             break;
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
