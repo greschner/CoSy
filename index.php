@@ -13,8 +13,9 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
+file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT));
+
 $update = Update::create($data);
-//file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
 
 
 $bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
