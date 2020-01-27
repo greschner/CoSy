@@ -75,7 +75,9 @@ if ($message = $update->getMessage()){
             );
             $context = stream_context_create($opts);
             $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=$search_term&role=$role", false, $context);
-            $sendMessage = new SendMessage($chatID, $result);
+            $resultJson = json_decode($result, true);
+            $returnData = $resultJson['result'];
+            $sendMessage = new SendMessage($chatID, $returnData);
             $bot->sendMessage($sendMessage);
     }
 }
