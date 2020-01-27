@@ -94,6 +94,11 @@ if ($message = $update->getMessage()) {
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage($sendMessage);
             break;
+        case "/help":
+        case "?":
+            $sendMessage = new SendMessage($chatID, '/start startet den Bot' . PHP_EOL . '/help oder ? listed die Hilfe auf');
+            $bot->sendMessage($sendMessage);
+            break;
         default:
             $role = getTargetGroup($chatID);
             $search_term = urlencode($messageText);
