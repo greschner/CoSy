@@ -50,40 +50,40 @@ if (isset($request["role"])) {
 $filter = '';
 if (isset($request["filter"])) {
     switch (strtolower($request["filter"])) {
-        case "Handy & Tablet":
+        case "handy & tablet":
             $filter = '/1/4/';
             break;
-        case "Digitale Spiele":
+        case "digitale spiele":
             $filter = '/1/5/';
             break;
-        case "Soziale Netzwerke":
+        case "soziale netzwerke":
             $filter = '/1/6/';
             break;
-        case "Problematische Inhalte":
+        case "problematische inhalte":
             $filter = '/1/7/';
             break;
-        case "Informationskompetenz":
+        case "informationskompetenz":
             $filter = '/1/8/';
             break;
-        case "Selbstdarstellung":
+        case "selbstdarstellung":
             $filter = '/1/9/';
             break;
-        case "Datenschutz":
+        case "datenschutz":
             $filter = '/1/10/';
             break;
-        case "Cyber-Mobbing":
+        case "cyber-mobbing":
             $filter = '/1/11/';
             break;
-        case "Internet-Betrug":
+        case "internet-betrug":
             $filter = '/1/12/';
             break;
-        case "Online-Shopping":
+        case "online-shopping":
             $filter = '/1/13/';
             break;
-        case "Urheberrechte":
+        case "urheberrechte":
             $filter = '/1/14/';
             break;
-        case "Viren, Spam & Co":
+        case "viren, spam & co":
             $filter = '/1/15/';
             break;
     }
