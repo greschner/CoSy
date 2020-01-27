@@ -52,6 +52,7 @@ if ($message = $update->getMessage()) {
 
     switch ($messageText) {
         case "/start":
+            writeTargetGroup($chatID, 'Eltern');
             $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.' . PHP_EOL . 'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
         case "/zielgruppe":
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
