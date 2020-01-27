@@ -200,6 +200,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             );
             $context = stream_context_create($opts);
             $result = file_get_contents("https://lemonchill.azurewebsites.net/search.php?search_term=*&role=$role&filter=$filter", false, $context);
+            file_put_contents("log.txt", json_encode($result, PRETTY_));
             $resultJson = json_decode($result, true);
             $returnData = $resultJson['result'];
             if (count($returnData)===0){

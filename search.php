@@ -102,7 +102,7 @@ $search_results = $my_parser->getData();
 
 #build response object
 $result_array = [];
-$result_array["request"] = strtolower($request["filter"]);
+//$result_array["request"] = strtolower($request["filter"]);
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
 $counter = 0;
