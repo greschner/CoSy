@@ -172,7 +172,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
     }
-    file_put_contents("query.txt", $callbackQuery->getMessage()->getText());
+    //file_put_contents("query.txt", $callbackQuery->getMessage()->getText());
 }
 
 ?>
