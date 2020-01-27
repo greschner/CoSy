@@ -18,8 +18,8 @@ file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT), FILE_APPEND)
 $update = Update::create($data);
 
 // how to setup webhook
-// https://api.telegram.org/bot985773771:AAFkHtSysi64ququF7Ksv1M0XtbsX72XZAk/setWebhook?url=https://lemonchill.azurewebsites.net/
-$bot = new Bot('985773771:AAFkHtSysi64ququF7Ksv1M0XtbsX72XZAk');
+// https://api.telegram.org/bot1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI/setWebhook?url=https://lemonchill.azurewebsites.net/
+$bot = new Bot('1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI');
 
 function getTargetGroup($chatID)
 {
