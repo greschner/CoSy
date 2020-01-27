@@ -201,7 +201,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             sleep(1);
             $bot->sendMessage($sendMessage);
             break;
-        case "Handy & Tablet":
+        case "Handy und Tablet":
         case "Digitale Spiele":
         case "Problematische Inhalte":
         case "Datenschutz":
@@ -212,7 +212,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         case "Internet Betrug":
         case "Online-Shopping":
         case "Selbstdarstellung":
-        case "Viren, Spam & Co":
+        case "Viren, Spam und Co":
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
             $role = getTargetGroup($chatID);
