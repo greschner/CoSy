@@ -13,16 +13,19 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
+file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT), FILE_APPEND);
+
 $update = Update::create($data);
-//file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT),FILE_APPEND);
 
-
-$bot = new Bot('1041036378:AAEklkqQVADfltXOkyyfbaV1coFx9W3fXPo');
+// how to setup webhook
+// https://api.telegram.org/bot1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI/setWebhook?url=https://lemonchill.azurewebsites.net/
+$bot = new Bot('1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI');
 
 function getTargetGroup($chatID)
 {
     $targetGroupFileName = "targetGroup.json";
     $content = file_get_contents($targetGroupFileName);
+    $result = false;
     if ($content === false) // no file existing yet
         $result = false;
     else {
@@ -128,7 +131,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $bot->sendMessage($sendMessage);
             break;
         case "Themen anzeigen":
-            $b1 = InlineKeyboardButton::withTextAsCallbackData('Handy & Tablet');
+            $b1 = InlineKeyboardButton::withTextAsCallbackData('Handy und Tablet');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Digitale Spiele');
             $b3 = InlineKeyboardButton::withTextAsCallbackData('Problematische Inhalte');
             $b4 = InlineKeyboardButton::withTextAsCallbackData('Datenschutz');
@@ -139,7 +142,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $b9 = InlineKeyboardButton::withTextAsCallbackData('Internet Betrug');
             $b10 = InlineKeyboardButton::withTextAsCallbackData('Online-Shopping');
             $b11 = InlineKeyboardButton::withTextAsCallbackData('Selbstdarstellung');
-            $b12 = InlineKeyboardButton::withTextAsCallbackData('Viren, Spam & Co');
+            $b12 = InlineKeyboardButton::withTextAsCallbackData('Viren, Spam und Co');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5], [$b6], [$b7], [$b8], [$b9], [$b10], [$b11], [$b12]]);
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Ich habe folgende Themen zur Auswahl:');
             $sendMessage->setReplyMarkup($keyboard);
