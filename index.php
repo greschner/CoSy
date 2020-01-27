@@ -98,7 +98,7 @@ if ($message = $update->getMessage()) {
             break;
         case "/help":
         case "?":
-            $sendMessage = new SendMessage($chatID, '/start startet den Bot' . PHP_EOL . '/help oder ? listed die Hilfe auf' . PHP_EOL . '/themen listet verschiedene Themen auf');
+            $sendMessage = new SendMessage($chatID, '/start startet den Bot' . PHP_EOL . '/help oder ? listed die Hilfe auf' . PHP_EOL . '/themen listet verschiedene Themen auf'. PHP_EOL .'/zielgruppe ermöglicht die Zielgruppe zu wechseln');
             $bot->sendMessage($sendMessage);
             break;
         case "/themen":
