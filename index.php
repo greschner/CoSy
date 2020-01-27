@@ -109,6 +109,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         case "Frage stellen":
             $sendMessage = new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Dann leg los! Stell mir eine Frage!');
             $bot->sendMessage($sendMessage);
+            $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             break;
         case "Richard Lugner":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
