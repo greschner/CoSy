@@ -137,6 +137,7 @@ if ($message = $update->getMessage()) {
                 $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
                 $bot->sendMessage($sendMessage);
             } else {
+                $bot->sendMessage(new SendMessage($chatID, 'Ich habe intensiv recherchiert und folgende Ergebnisse gefunden:'));
                 foreach ($returnData as $item){
                     $sendMessage = new SendMessage($chatID, $item);
                     $bot->sendMessage($sendMessage);
@@ -233,6 +234,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
                 $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
                 $bot->sendMessage($sendMessage);
             } else {
+                $bot->sendMessage(new SendMessage($chatID, 'Das habe ich zum Thema '.$callbackData.' gefunden:'));
                 foreach ($returnData as $item){
                     $sendMessage = new SendMessage($chatID, $item);
                     $bot->sendMessage($sendMessage);
