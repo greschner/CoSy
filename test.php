@@ -1,16 +1,11 @@
  <!DOCTYPE html>
 <html>
 <body>
-
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-echo 'test';
-exit;
 $opts = array('http' =>
 	    array(
 		'method'  => 'GET',
