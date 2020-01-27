@@ -37,7 +37,6 @@ if ($message = $update->getMessage()){
 }
 
 if ($callbackQuery = $update->getCallbackQuery()) {
-
     switch ($callbackQuery->getData()){
         case "Eltern":
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
@@ -72,9 +71,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
     }
-
     file_put_contents("query.txt",$callbackQuery->getMessage()->getText());
-
 }
 
 ?>
