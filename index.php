@@ -37,7 +37,7 @@ function getTargetGroup($chatID){
 function writeTargetGroup($chatID, $targetGroup){
     $targetGroupFileName = "targetGroup.json";
     $data = array($chatID => $targetGroup);
-    file_put_contents($targetGroupFileName, $data,FILE_APPEND|LOCK_EX);
+    file_put_contents($targetGroupFileName, json_encode($data),FILE_APPEND|LOCK_EX);
 }
 
 if ($message = $update->getMessage()){
