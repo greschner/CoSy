@@ -13,7 +13,6 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
-file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT), FILE_APPEND);
 
 $update = Update::create($data);
 
@@ -45,36 +44,6 @@ function writeTargetGroup($chatID, $targetGroup)
     $content_decoded[$chatID] = $targetGroup;
     file_put_contents($targetGroupFileName, json_encode($content_decoded), LOCK_EX);
 }
-
-/*function performSearch($bot, $chatID, $searchTerm, $filter)
-{
-    $role = getTargetGroup($chatID);
-    $searchTerm_enc = urlencode($searchTerm);
-    $opts = array('http' =>
-        array(
-            'method' => 'GET',
-            'header' => 'Content-type: application/json'
-        )
-    );
-    $context = stream_context_create($opts);
-    if ($filter === false)
-        $fn = "https://lemonchill.azurewebsites.net/search.php?search_term=$searchTerm_enc&role=$role";
-    else
-        $fn = "https://lemonchill.azurewebsites.net/search.php?search_term=$searchTerm_enc&role=$role&filter=$filter";
-
-    $result = file_get_contents($fn, false, $context);
-    $resultJson = json_decode($result, true);
-    $returnData = $resultJson['result'];
-    if (count($returnData) === 0) {
-        $sendMessage = new SendMessage($chatID, "Leider konnte ich unter dem von dir gewählten Suchbegriff keine Ergebnisse für deine Zielgruppe finden. Bitte wähle einen anderen Suchbegriff...");
-        $bot->sendMessage($sendMessage);
-    } else {
-        foreach ($returnData as $item) {
-            $sendMessage = new SendMessage($chatID, $item);
-            $bot->sendMessage($sendMessage);
-        }
-    }
-}*/
 
 if ($message = $update->getMessage()) {
 
@@ -165,7 +134,7 @@ if ($callbackQuery = $update->getCallbackQuery()) {
             $sendMessage->setReplyMarkup($keyboard);
             $bot->deleteMessage(new DeleteMessage($callbackQuery->getMessage()->getChat()->getId(), $callbackQuery->getMessage()->getMessageId()));
             sleep(1);
-            $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Alles klar! Ich merke mir diese Einstellung für zukünftige Fragen.' . PHP_EOL . 'Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
+            $bot->sendMessage(new SendMessage($callbackQuery->getMessage()->getChat()->getId(), 'Alles klar! Ich merke mir diese Einstellung ('.$callbackData.') für zukünftige Fragen.' . PHP_EOL . 'Wenn du deine Auswahl später ändern willst schicke mir einfach eine neue Nachricht mit /start'));
             sleep(1);
             $bot->sendMessage($sendMessage);
 
@@ -243,7 +212,6 @@ if ($callbackQuery = $update->getCallbackQuery()) {
         default:
             $bot->answerCallbackQuery(new AnswerCallbackQuery($callbackQuery->getId()));
     }
-    //file_put_contents("query.txt", $callbackQuery->getMessage()->getText());
 }
 
 ?>
