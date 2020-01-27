@@ -105,7 +105,7 @@ $result_array = [];
 $result_array["url"] = $url;
 $counter = 0;
 $result_array['result'] = [];
-while ($search_results[$counter] !== null && $counter < 5) {
+while ($search_results[$counter] !== null && $counter < 5 && $search_results[$counter]["link"] !== null) {
     array_push($result_array["result"], $search_results[$counter]["link"]);
     $counter++;
 }
