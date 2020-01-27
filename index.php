@@ -12,7 +12,6 @@ use Formapro\TelegramBot\DeleteMessage;
 use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
-http_response_code(200);
 $data = json_decode($requestBody, true);
 file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT), FILE_APPEND);
 
