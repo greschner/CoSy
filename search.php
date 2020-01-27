@@ -74,7 +74,7 @@ if (isset($request["filter"])) {
         case "cyber-mobbing":
             $filter = '/1/3/';
             break;
-        case "internet-betrug":
+        case "internet betrug":
             $filter = '/1/6/';
             break;
         case "online-shopping":
