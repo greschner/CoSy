@@ -30,22 +30,22 @@ $role = '';
 if (isset($request["role"])) {
     switch (strtolower($request["role"])) {
         case "eltern":
-            $role = '/2/16/';
-            break;
+	    $role = '/2/16/';
+	    break;
         case "lehrende":
-            $role = '/2/17/';
+	    $role = '/2/17/';
             break;
         case "jugendliche":
-            $role = '/2/20/';
+	    $role = '/2/20/';
             break;
         case "senioren":
-            $role = '/2/18/';
+	    $role = '/2/18/';
             break;
         case "jugendarbeit":
-            $role = '/2/19/';
-            break;
+	    $role = '/2/19/';
+	    break;
     }
-    $role = '&tx_solr[filter][0]=category:' . $role;
+    $role = '&tx_solr[filter][0]=category:'.$role;
 }
 $filter = '';
 if (isset($request["filter"])) {
@@ -105,10 +105,10 @@ $result_array = [];
 $result_array["request"] = $request;
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
-$counter = 0;
-$result_array['result'] = '';
-while ($search_results[$counter] !== null && $counter < 5) {
-    $result_array["result"] .= "<a href='" . $search_results[$counter]["link"] . "'>" . $search_results[$counter]["heading"] . "</a><br>"; #TODO: change when moving to PHP-Bot (ActiveChat bot just accepts plain text)
+$counter =0;
+$result_array['result'] = [];
+while ($search_results[$counter] !== null && $counter < 5){
+    array_push($result_array["result"], $search_results[$counter]["link"]);
     $counter++;
 }
 #return data
