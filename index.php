@@ -37,7 +37,12 @@ function getTargetGroup($chatID){
 function writeTargetGroup($chatID, $targetGroup){
     $targetGroupFileName = "targetGroup.json";
     $data = array($chatID => $targetGroup);
-    file_put_contents($targetGroupFileName, json_encode($data),FILE_APPEND|LOCK_EX);
+    $content =  file_get_contents($targetGroupFileName);
+    if($content!==false) {// no file existing yet
+        $content_decoded = json_decode($content, true);
+    }
+    $content_decoded[$chatID] = $targetGroup;
+    file_put_contents($targetGroupFileName, json_encode($content_decoded),LOCK_EX);
 }
 
 if ($message = $update->getMessage()){
@@ -61,7 +66,7 @@ if ($message = $update->getMessage()){
             break;
         default:
             $role = getTargetGroup($chatID);
-            $search_term = $messageText;
+            $search_term = urlencode($messageText);
             $opts = array('http' =>
                 array(
                     'method'  => 'GET',
