@@ -57,34 +57,34 @@ if (isset($request["filter"])) {
             $filter = '/1/5/';
             break;
         case "soziale netzwerke":
-            $filter = '/1/6/';
-            break;
-        case "problematische inhalte":
-            $filter = '/1/7/';
-            break;
-        case "informationskompetenz":
-            $filter = '/1/8/';
-            break;
-        case "selbstdarstellung":
-            $filter = '/1/9/';
-            break;
-        case "datenschutz":
-            $filter = '/1/10/';
-            break;
-        case "cyber-mobbing":
             $filter = '/1/11/';
             break;
-        case "internet-betrug":
-            $filter = '/1/12/';
-            break;
-        case "online-shopping":
-            $filter = '/1/13/';
-            break;
-        case "urheberrechte":
+        case "problematische inhalte":
             $filter = '/1/14/';
             break;
+        case "informationskompetenz":
+            $filter = '/1/10/';
+            break;
+        case "selbstdarstellung":
+            $filter = '/1/12/';
+            break;
+        case "datenschutz":
+            $filter = '/1/21/';
+            break;
+        case "cyber-mobbing":
+            $filter = '/1/3/';
+            break;
+        case "internet-betrug":
+            $filter = '/1/6/';
+            break;
+        case "online-shopping":
+            $filter = '/1/7/';
+            break;
+        case "urheberrechte":
+            $filter = '/1/8/';
+            break;
         case "viren, spam und co":
-            $filter = '/1/15/';
+            $filter = '/1/9/';
             break;
     }
     $filter = '&tx_solr[filter][1]=category:' . $filter;
@@ -102,7 +102,7 @@ $search_results = $my_parser->getData();
 
 #build response object
 $result_array = [];
-$result_array["request"] = $request;
+$result_array["request"] = strtolower($request["filter"]);
 $result_array["status"] = "success"; #necessary for activeChat.ai TODO: evaluate
 $result_array["url"] = $url; #TODO remove (testing only)
 $counter = 0;
