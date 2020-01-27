@@ -83,20 +83,41 @@ if ($message = $update->getMessage()) {
 
     switch ($messageText) {
         case "/start":
+            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.' . PHP_EOL . 'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+        case "/zielgruppe":
             $b1 = InlineKeyboardButton::withTextAsCallbackData('Eltern');
             $b2 = InlineKeyboardButton::withTextAsCallbackData('Lehrende');
             $b3 = InlineKeyboardButton::withTextAsCallbackData('Jugendarbeit');
             $b4 = InlineKeyboardButton::withTextAsCallbackData('Jugendliche');
             $b5 = InlineKeyboardButton::withTextAsCallbackData('Senioren');
             $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5]]);
-
-            $sendMessage = new SendMessage($chatID, 'Hallo! Ich bin Nicole.' . PHP_EOL . 'Ich kenne mich sehr gut aus mit Fragen zum richtigen Umgang mit dem Internet. Damit ich dir besser helfen kann wähle bitte die Zielgruppe, der du dich am ehesten zugehörig fühlst:');
+            if (!isset($sendMessage))
+                $sendMessage = new SendMessage($chatID, 'Zielgruppe wählen:');
             $sendMessage->setReplyMarkup($keyboard);
             $bot->sendMessage($sendMessage);
             break;
         case "/help":
         case "?":
-            $sendMessage = new SendMessage($chatID, '/start startet den Bot' . PHP_EOL . '/help oder ? listed die Hilfe auf');
+            $sendMessage = new SendMessage($chatID, '/start startet den Bot' . PHP_EOL . '/help oder ? listed die Hilfe auf' . PHP_EOL . '/themen listet verschiedene Themen auf');
+            $bot->sendMessage($sendMessage);
+            break;
+        case "/themen":
+            $b1 = InlineKeyboardButton::withTextAsCallbackData('Handy und Tablet');
+            $b2 = InlineKeyboardButton::withTextAsCallbackData('Digitale Spiele');
+            $b3 = InlineKeyboardButton::withTextAsCallbackData('Problematische Inhalte');
+            $b4 = InlineKeyboardButton::withTextAsCallbackData('Datenschutz');
+            $b5 = InlineKeyboardButton::withTextAsCallbackData('Soziale Netzwerke');
+            $b6 = InlineKeyboardButton::withTextAsCallbackData('Informationskompetenz');
+            $b7 = InlineKeyboardButton::withTextAsCallbackData('Urheberrechte');
+            $b8 = InlineKeyboardButton::withTextAsCallbackData('Cyber Mobbing');
+            $b9 = InlineKeyboardButton::withTextAsCallbackData('Internet Betrug');
+            $b10 = InlineKeyboardButton::withTextAsCallbackData('Online-Shopping');
+            $b11 = InlineKeyboardButton::withTextAsCallbackData('Selbstdarstellung');
+            $b12 = InlineKeyboardButton::withTextAsCallbackData('Viren, Spam und Co');
+            $keyboard = new InlineKeyboardMarkup([[$b1], [$b2], [$b3], [$b4], [$b5], [$b6], [$b7], [$b8], [$b9], [$b10], [$b11], [$b12]]);
+            $sendMessage = new SendMessage($chatID, 'Ich habe folgende Themen zur Auswahl:');
+            $sendMessage->setReplyMarkup($keyboard);
+            sleep(1);
             $bot->sendMessage($sendMessage);
             break;
         default:
