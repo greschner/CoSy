@@ -1,6 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
-// https://api.telegram.org/bot1041036378:AAFJU6H2x42Ivy_UlveWtzUsRvcZLPFLbrg/setWebhook?url=https://lemonchill.azurewebsites.net/
+
 use Formapro\TelegramBot\Bot;
 use Formapro\TelegramBot\SendPhoto;
 use Formapro\TelegramBot\Update;
@@ -13,12 +13,13 @@ use function GuzzleHttp\Psr7\str;
 
 $requestBody = file_get_contents('php://input');
 $data = json_decode($requestBody, true);
-file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT));
+file_put_contents("data.txt",json_encode($data, JSON_PRETTY_PRINT), FILE_APPEND);
 
 $update = Update::create($data);
 
-
-$bot = new Bot('1041036378:AAFJU6H2x42Ivy_UlveWtzUsRvcZLPFLbrg');
+// how to setup webhook
+// https://api.telegram.org/bot1032881790:AAEJHofOe_kwYKM0aF6GF1o0JJNA8tGk5ts/setWebhook?url=https://lemonchill.azurewebsites.net/
+$bot = new Bot('1032881790:AAEJHofOe_kwYKM0aF6GF1o0JJNA8tGk5ts');
 
 function getTargetGroup($chatID)
 {
