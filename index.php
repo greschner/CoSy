@@ -16,9 +16,7 @@ $data = json_decode($requestBody, true);
 
 $update = Update::create($data);
 
-// how to setup webhook
-// https://api.telegram.org/bot1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI/setWebhook?url=https://lemonchill.azurewebsites.net/
-$bot = new Bot('1085962320:AAGPUP2NnIV0mlUBGRMQiFoaT33fEHrXCBI');
+$bot = new Bot('token-ID');
 
 function getTargetGroup($chatID)
 {
